@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coming Soon</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Allura&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    .background {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .bg-image {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.8s ease-in-out, transform 6s ease;
+      transform: scale(1.05);
+    }
+
+    .bg-image.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: -1;
+    }
+
+    .content {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      mix-blend-mode: difference;
+      position: relative;
+    }
+
+    /* 🔥 blurred glass effect behind text */
+    .content::before {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 220px;
+      max-width: 90vw;
+      max-height: 40vh;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 24px;
+      z-index: -1;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3rem, 8vw, 6rem);
+      letter-spacing: 2px;
+      color: white;
+      transition: transform 0.8s ease, opacity 0.8s ease;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.3);
+    }
+
+    p {
+      margin-top: 15px;
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      font-family: 'Allura', cursive;
+      color: white;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 1s ease, transform 1s ease;
+      text-shadow: 0 3px 15px rgba(0,0,0,0.5);
+    }
+
+    p.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background" id="background"></div>
+  <div class="overlay"></div>
+
+  <div class="content">
+    <h1 id="name">Julia Keskitalo</h1>
+    <p id="tagline">My personal portfolio is coming here soon 😇</p>
+  </div>
+
+  <script>
+    const images = [
+      "./resources/bg1.jpeg",
+      "./resources/bg2.jpeg",
+    ];
+
+    const bgContainer = document.getElementById("background");
+    const taglineEl = document.getElementById("tagline");
+
+    let current = 0;
+
+    const bgElements = images.map((src, i) => {
+      const div = document.createElement("div");
+      div.classList.add("bg-image");
+      div.style.backgroundImage = `url(${src})`;
+      if (i === 0) div.classList.add("active");
+      bgContainer.appendChild(div);
+      return div;
+    });
+
+    function switchImage() {
+      bgElements[current].classList.remove("active");
+      current = (current + 1) % images.length;
+      bgElements[current].classList.add("active");
+    }
+
+    setTimeout(() => {
+      taglineEl.classList.add("visible");
+    }, 800);
+
+    setInterval(switchImage, 5000);
+  </script>
+
+</body>
+</html>
